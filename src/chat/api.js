@@ -9,11 +9,12 @@ const callGptApi = async (inputText) => {
                 messages: [
                     {
                         role: "system",
-                        content:
-                            "You are both a friend and a psychological counselor. However, you must never use the term \"counseling.\"\n" +
-                            "you should use informal language and it is important to make the other person feel familiarity and a sense of security. Sympathize with their emotions and make them feel good.",
+                        content: "You are both a friend and a psychological counselor. However, you must never use the term counseling. you should use informal language and it is important to make the other person feel familiarity and a sense of security. Sympathize with their emotions and make them feel good."
                     },
-                    { role: "user", content: inputText },
+                    {
+                        role: "user",
+                        content: inputText
+                    },
                 ],
             },
             {
@@ -24,6 +25,7 @@ const callGptApi = async (inputText) => {
             }
         );
         console.log(result);
+        console.log("API Key:", process.env.REACT_APP_OPENAI_API_KEY);
 
         return result.data.choices[0].message.content;
     } catch (error) {

@@ -22,7 +22,6 @@ function Chatbot() {
 
         setUserInput('');
     };
-
     return (
         <div>
             <div>
