@@ -1,8 +1,15 @@
+import {Configuration, OpenAIApi} from "openai";
+import {Button} from "@mui/material";
+import Chatbot from "../chat/Chatbot";
+
 
 const MainPage = () => {
 
   return (
-    <div>홈페이지</div>
+      <div>
+        <Chatbot />
+      </div>
+
   )
 }
 
