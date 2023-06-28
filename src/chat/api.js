@@ -25,7 +25,6 @@ const callGptApi = async (inputText) => {
             }
         );
         console.log(result);
-        console.log("API Key:", process.env.REACT_APP_OPENAI_API_KEY);
 
         return result.data.choices[0].message.content;
     } catch (error) {
