@@ -45,7 +45,7 @@ function Chatbot() {
                         padding: '6px 12px',
                         ...(log.type === '나'
                             ? { borderRadius: '14px 0px 14px 14px' }
-                            : { borderRadius: '0px 14px 14px 14px' }),
+                            : { borderRadius: '0px 14px 14px 14px',textAlign: 'left' }),
                     }}
                 >
                     <Typography>{log.text}</Typography>
@@ -63,6 +63,7 @@ function Chatbot() {
                         maxHeight: '50vh',
                         padding: '16px',
                         overflow: 'auto',
+                        backgroundColor: 'black',
                     }}
                 >
                     {chatLogs.map(renderChatLog)}
