@@ -17,7 +17,7 @@ const MainPage = () => {
           <Typography sx={{ fontSize: '40px',fontWeight:'bold',color:'white' }}>잠시 쉬어가도 괜찮아</Typography>
         </Grid>
         <Grid item xs={12} sx={{ position: 'relative' }} md={6}>
-          <img alt="logo" src="./phone.png" style={{ width: '60%' }} />
+          <img alt="logo" src="./phone2.png" style={{ width: '60%' }} />
           <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
             <Chatbot />
           </div>
