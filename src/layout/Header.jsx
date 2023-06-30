@@ -97,7 +97,7 @@ const Header = () => {
       elevation={0}
       sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}`, backgroundColor: '#2B90D9' }}
     >
-      <Toolbar sx={{ flexWrap: 'wrap' }}>
+      <Toolbar sx={{ flexWrap: 'wrap', display:'flex',justifyContent:'space-between' }}>
         <img onClick={()=> {navigate('/')}} alt="logo" src={`./logo.png`} style={{ width: '150px' }} />
         <nav>
           <Link
@@ -110,11 +110,11 @@ const Header = () => {
           </Link>
           <Link
             variant="button"
-            href="#"
+            href="/service/stress"
             fontWeight="800"
             sx={{ my: 1, mx: 1.5, color: 'white', textDecoration: 'none' }}
           >
-            1350 상담서비스
+            서비스
           </Link>
           <Link
             variant="button"

@@ -1,12 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import SignIn from '../components/SignIn';
 
-const SignInPage = () => {
+const HealingPage = () => {
   const navigate = useNavigate();
 
   return (
-    <SignIn />
+    <div>힐링페이지</div>
   );
 }
 
-export default SignInPage;
+export default HealingPage;

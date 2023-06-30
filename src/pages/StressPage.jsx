@@ -1,12 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import SignIn from '../components/SignIn';
 
-const SignInPage = () => {
+const StressPage = () => {
   const navigate = useNavigate();
 
   return (
-    <SignIn />
+    <div>스트레스 지수 페이지</div>
   );
 }
 
-export default SignInPage;
+export default StressPage;
