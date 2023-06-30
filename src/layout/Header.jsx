@@ -98,7 +98,7 @@ const Header = () => {
       sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}`, backgroundColor: '#2B90D9' }}
     >
       <Toolbar sx={{ flexWrap: 'wrap' }}>
-        <img alt="logo" src={`./logo.png`} style={{ width: '150px' }} />
+        <img onClick={()=> {navigate('/')}} alt="logo" src={`./logo.png`} style={{ width: '150px' }} />
         <nav>
           <Link
             variant="button"
