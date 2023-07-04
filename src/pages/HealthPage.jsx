@@ -1,9 +1,19 @@
 import { useNavigate } from 'react-router-dom';
-import SignIn from '../components/SignIn';
+import { useEffect } from 'react';
 import { Box, Checkbox, FormControlLabel, FormGroup, Skeleton } from '@mui/material';
 
+import { PUBLIC_URL } from '../global_variables';
+import useHttpRequest from '../hook/use-http';
 const HealthPage = () => {
+  const { isLoading, sendGetRequest } = useHttpRequest();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const getPublicDataHandler = data => {
+      console.log(data.data);
+    };
+    sendGetRequest(`${PUBLIC_URL}/B490001/sjHptMcalPstateInfoService`, getPublicDataHandler);
+  }, []);
 
   return (
     <>

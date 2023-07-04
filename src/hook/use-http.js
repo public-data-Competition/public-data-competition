@@ -18,14 +18,14 @@ const useHttpRequest = (isLoadingInit = false) => {
       try {
         let response;
         if (authCtx.token) {
-          response = await fetch(`${BACKEND_BASE_URL}${endpoint}`, {
+          response = await fetch(`${endpoint}`, {
             headers: {
               Authorization: 'Bearer ' + authCtx.token,
             },
             signal,
           });
         } else {
-          response = await fetch(`${BACKEND_BASE_URL}${endpoint}`);
+          response = await fetch(`${endpoint}`);
         }
 
         if (!response.ok) {
