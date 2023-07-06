@@ -3,11 +3,10 @@ import Chatbot from "../chat/Chatbot";
 
 const MainPage = () => {
 
-  return (
-      <div>
-        <Chatbot />
-      </div>
-
+    return (
+            <div>
+                <Chatbot />
+            </div>
   )
 }
 
