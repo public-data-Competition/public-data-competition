@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState  } from "react";
 import { useNavigate } from 'react-router-dom';
 import { Box, Checkbox, FormControlLabel, FormGroup, Skeleton } from '@mui/material';
 
 import { PUBLIC_URL } from '../global_variables';
 import useHttpRequest from '../hook/use-http';
 import KakaoMap from '../components/KakaoMap';
+import MyNaverMap from "../components/MyMap";
 
 const HealthPage = () => {
   const { isLoading, sendGetRequest } = useHttpRequest();
@@ -88,6 +89,7 @@ const HealthPage = () => {
     }
   }, [latitude, longitude]);
 
+
   return (
     <>
       <FormGroup sx={{ display: 'block' }}>
@@ -97,7 +99,8 @@ const HealthPage = () => {
         <FormControlLabel control={<Checkbox />} label="산재재활기관관리정보" />
       </FormGroup>
       <Box height="900px" >
-        <KakaoMap />
+        {/* <KakaoMap /> */}
+        <MyNaverMap />
         {/* <Skeleton width="100vw" height="100vh"></Skeleton> */}
       </Box>
     </>
