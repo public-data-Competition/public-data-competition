@@ -46,6 +46,9 @@ export default function BasicTabs({ initValue = 0, tabsData }) {
       case '/service/health':
         setValue(2);
         break;
+        case '/service/healing':
+          setValue(3);
+          break;
       default:
         setValue(initValue);
     }
