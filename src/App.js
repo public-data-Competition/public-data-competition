@@ -27,6 +27,12 @@ function App() {
         dark: '#D9E1E8',
         contrastText: 'white',
       },
+      common: {
+        light: '#f5faf8',
+        main: '#3da684',
+        dark: '#2a7e63',
+        contrastText: 'white',
+      },
     },
   });
 

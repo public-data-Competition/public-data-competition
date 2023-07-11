@@ -1,11 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import SignIn from '../components/SignIn';
+import BasicTable from '../components/BasicTable';
 
 const StressPage = () => {
   const navigate = useNavigate();
 
   return (
-    <div>스트레스 지수 페이지</div>
+    <BasicTable/>
   );
 }
 
