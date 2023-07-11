@@ -10,7 +10,7 @@ const MainPage = () => {
     <React.Fragment>
       <GlobalStyles styles={{ ul: { margin: 0, padding: 0, listStyle: 'none' } }} />
       <CssBaseline />
-      <Grid container p="20px" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#F7F9F8' }}>
+      <Grid container p="20px" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <Grid item xs={12} md={7}>
           <div>
             <img alt="ment" src="./ment.png" style={{ width: '50%' }} />

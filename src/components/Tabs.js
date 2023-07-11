@@ -60,7 +60,7 @@ export default function BasicTabs({ initValue = 0, tabsData }) {
               display: 'flex',
               justifyContent: 'center'
             },
-            backgroundColor: '#FFFFFF'
+            backgroundColor: 'white'
           }}>
           {tabsData.map((tabData) => (
             <Tab
@@ -77,7 +77,7 @@ export default function BasicTabs({ initValue = 0, tabsData }) {
                   border: '1px solid white',
                   borderRadius: '12px 12px 0 0',
                   margin: 0,
-                  backgroundColor: 'white'
+                  backgroundColor: '#F7F9F8'
                 }
               }}
             />
