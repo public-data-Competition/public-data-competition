@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import { Link } from 'react-router-dom';
 
@@ -34,6 +33,24 @@ export default function BasicTabs({ initValue = 0, tabsData }) {
     );
   };
 
+  useEffect(() => {
+    const path = window.location.pathname;
+
+    switch (path) {
+      case '/service/stress':
+        setValue(0);
+        break;
+      case '/service/peace':
+        setValue(1);
+        break;
+      case '/service/health':
+        setValue(2);
+        break;
+      default:
+        setValue(initValue);
+    }
+  }, [value]);
+
   return (
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -43,7 +60,7 @@ export default function BasicTabs({ initValue = 0, tabsData }) {
               display: 'flex',
               justifyContent: 'center'
             },
-            backgroundColor:'#FFFFFF'
+            backgroundColor: '#FFFFFF'
           }}>
           {tabsData.map((tabData) => (
             <Tab
@@ -54,14 +71,15 @@ export default function BasicTabs({ initValue = 0, tabsData }) {
               to={tabData.path}
               {...a11yProps(tabData.index)}
               sx={{
-                color:'black',
-              '&.Mui-selected': {
-                color: '#2E4230',
-                border:'1px solid white',
-                borderRadius:'12px 12px 0 0',
-                margin:0,
-                backgroundColor:'white'
-              }}}
+                color: 'black',
+                '&.Mui-selected': {
+                  color: '#2E4230',
+                  border: '1px solid white',
+                  borderRadius: '12px 12px 0 0',
+                  margin: 0,
+                  backgroundColor: 'white'
+                }
+              }}
             />
           ))}
         </Tabs>
