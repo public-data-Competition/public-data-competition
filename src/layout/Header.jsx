@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
 import Toolbar from '@mui/material/Toolbar';
 import AppBar from '@mui/material/AppBar';
-import { Avatar, Button, GlobalStyles, Link, Menu, MenuItem } from '@mui/material';
+import { Avatar, Button, GlobalStyles, Grid, Link, Menu, MenuItem } from '@mui/material';
 
 import AuthContext from '../store/auth-context';
 
@@ -68,7 +68,7 @@ const Header = () => {
               handleClose();
               logoutHandler();
             }}
-            sx={{ color: '#3A3A3A', fontWeight: 'bold', fontSize: '14px' }}
+            sx={{ color: '##2E4230', fontWeight: 'bold', fontSize: '14px' }}
           >
             로그아웃
           </Button>
@@ -82,7 +82,7 @@ const Header = () => {
       fontWeight="800"
       sx={{ my: 1, mx: 1.5, color: 'white', textDecoration: 'none' }}
     >
-      <Button sx={{ color: '#3A3A3A', fontWeight: 'bold', fontSize: '14px' }}>
+      <Button sx={{ color: '#2E4230', fontWeight: 'bold', fontSize: '14px' }}>
         로그인
       </Button>
     </Link>
@@ -95,40 +95,48 @@ const Header = () => {
       position="static"
       color="default"
       elevation={0}
-      sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}`, backgroundColor: '#2B90D9' }}
+      sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}`, backgroundColor: '#F7F9F8' }}
     >
-      <Toolbar sx={{ flexWrap: 'wrap', display:'flex',justifyContent:'space-between' }}>
-        <img onClick={()=> {navigate('/')}} alt="logo" src={`./logo.png`} style={{ width: '150px' }} />
-        <nav>
-          <Link
-            variant="button"
-            href="#"
-            fontWeight="800"
-            sx={{ my: 1, mx: 1.5, color: 'white', textDecoration: 'none' }}
-          >
-            애니타임 소개
-          </Link>
-          <Link
-            variant="button"
-            href="/service/stress"
-            fontWeight="800"
-            sx={{ my: 1, mx: 1.5, color: 'white', textDecoration: 'none' }}
-          >
-            서비스
-          </Link>
-          <Link
-            variant="button"
-            href="#"
-            fontWeight="800"
-            sx={{ my: 1, mx: 1.5, color: 'white', textDecoration: 'none' }}
-          >
-            회사위치 지정하기
-          </Link>
-          {headerButtons}
-        </nav>
-        {/* <Button href="#" variant="outlined" sx={{ my: 1, mx: 1.5 }}>
-          Login
-        </Button> */}
+      <Toolbar>
+        <Grid container sx={{alignItems:'center'}}>
+          <Grid item xs={3} >
+            <img onClick={() => { navigate('/') }} alt="logo" src={`./logo.PNG`} style={{ width: '200px' }} />
+          </Grid>
+          <Grid item xs={2.2}>
+            <Link
+              variant="button"
+              href="#"
+              fontWeight="800"
+              sx={{ my: 1, mx: 1.5, color: '#2E4230', textDecoration: 'none' }}
+            >
+              애니타임 소개
+            </Link>
+          </Grid>
+          <Grid item xs={2.2}>
+            <Link
+              variant="button"
+              href="/service/stress"
+              fontWeight="800"
+              sx={{ my: 1, mx: 1.5, color: '#2E4230', textDecoration: 'none' }}
+            >
+              서비스
+            </Link>
+          </Grid>
+          <Grid item xs={2.2}>
+            <Link
+              variant="button"
+              href="#"
+              fontWeight="800"
+              sx={{ my: 1, mx: 1.5, color: '#2E4230', textDecoration: 'none' }}
+            >
+              회사위치 지정하기
+            </Link>
+          </Grid>
+          <Grid item xs={2.2}>
+            {headerButtons}
+          </Grid>
+        </Grid>
+
       </Toolbar>
     </AppBar>
   )

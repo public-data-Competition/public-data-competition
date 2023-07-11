@@ -17,13 +17,13 @@ function App() {
     palette: {
       primary: {
         light: '#FFF9E6',
-        main: '#2B90D9',
+        main: '#2E4230',
         dark: '#D9E1E8',
         contrastText: 'white',
       },
       secondary: {
         light: '#FFF9E6',
-        main: '#2B90D9',
+        main: '#2E4230',
         dark: '#D9E1E8',
         contrastText: 'white',
       },

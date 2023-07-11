@@ -3,20 +3,32 @@ import CssBaseline from '@mui/material/CssBaseline';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import Container from '@mui/material/Container';
 import Chatbot from "../chat/Chatbot";
-import { Typography,Grid } from '@mui/material';
+import { Typography, Grid, Skeleton } from '@mui/material';
 
 const MainPage = () => {
   return (
     <React.Fragment>
       <GlobalStyles styles={{ ul: { margin: 0, padding: 0, listStyle: 'none' } }} />
       <CssBaseline />
-      {/* style={{ backgroundColor: '#2B90D9' }} */}
-      {/* Hero unit */}
-      <Grid container p="20px" sx={{display:'flex',justifyContent:'center',alignItems:'center',backgroundColor: '#2B90D9'}}>
-        <Grid item xs={12} md={6}>
-          <Typography sx={{ fontSize: '40px',fontWeight:'bold',color:'white' }}>잠시 쉬어가도 괜찮아</Typography>
+      <Grid container p="20px" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#F7F9F8' }}>
+        <Grid item xs={12} md={7}>
+          <div>
+            <img alt="ment" src="./ment.png" style={{ width: '50%' }} />
+          </div>
+          <div>
+            <img alt="stress" src="./stress.png" style={{ width: '25%' ,margin:'8px'}} />
+            <img alt="mind" src="./mind.png" style={{ width: '25%' ,margin:'8px'}} />
+            <img alt="health" src="./health.png" style={{ width: '25%',margin:'8px' }} />
+          </div>
+          <div style={{display:'flex', justifyContent:'space-around',alignItems:'center'}}>
+            <Typography sx={{color:'#435645',fontWeight:'800'}}>애니타임 프로모션</Typography>
+            <Typography sx={{color:'#435645', fontSize:"0.9em"}}>더 많은 정보를 알고 싶다면? </Typography>
+          </div><br/>
+          <Skeleton variant="rounded" height={90} width="80%" sx={{margin:"0 auto", marginBottom:'8px'}}/>
+          <Skeleton variant="rounded" height={90} width="80%" sx={{margin:"0 auto"}}/>
+
         </Grid>
-        <Grid item xs={12} sx={{ position: 'relative' }} md={6}>
+        <Grid item xs={12} sx={{ position: 'relative' }} md={5}>
           <img alt="logo" src="./phone2.png" style={{ width: '60%' }} />
           <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
             <Chatbot />

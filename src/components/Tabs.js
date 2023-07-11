@@ -43,7 +43,7 @@ export default function BasicTabs({ initValue = 0, tabsData }) {
               display: 'flex',
               justifyContent: 'center'
             },
-            backgroundColor:'#DFF0FF'
+            backgroundColor:'#FFFFFF'
           }}>
           {tabsData.map((tabData) => (
             <Tab
@@ -56,7 +56,7 @@ export default function BasicTabs({ initValue = 0, tabsData }) {
               sx={{
                 color:'black',
               '&.Mui-selected': {
-                color: '#2B90D9',
+                color: '#2E4230',
                 border:'1px solid white',
                 borderRadius:'12px 12px 0 0',
                 margin:0,
