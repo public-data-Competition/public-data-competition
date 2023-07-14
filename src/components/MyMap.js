@@ -1,6 +1,4 @@
-/*global kakao */
-import React, { useState,useEffect,useRef } from "react";
-import { Container as MapDiv, NaverMap, useNavermaps, InfoWindow } from 'react-naver-maps';
+import React, { useEffect, useRef } from "react";
 
 const markerdata = [
   {
@@ -24,34 +22,40 @@ const markerdata = [
     lng: 127.15211256646381,
   },
 ];
+
 function MyMap() {
   const mapElement = useRef(null);
-
 
   useEffect(() => {
     const { naver } = window;
     if (!mapElement.current || !naver) return;
 
-    // 지도에 표시할 위치의 위도와 경도 좌표를 파라미터로 넣어줍니다.
-    const location = new naver.maps.LatLng(37.5656, 126.9769);
-    const mapOptions: naver.maps.MapOptions = {
-      center: location,
-      zoom: 17,
+    const mapOptions = {
+      zoom: 14,
       zoomControl: true,
       zoomControlOptions: {
         position: naver.maps.Position.TOP_RIGHT,
       },
     };
+
     const map = new naver.maps.Map(mapElement.current, mapOptions);
-    new naver.maps.Marker({
-      position: location,
-      map,
+
+    markerdata.forEach((mark) => {
+      const markerOptions = {
+        position: new naver.maps.LatLng(mark.lat, mark.lng),
+        map: map,
+        title: mark.title,
+      };
+
+      const marker = new naver.maps.Marker(markerOptions);
+
+      naver.maps.Event.addListener(marker, 'click', () => {
+        alert(marker.getTitle());
+      });
     });
   }, []);
 
-
-  return <div ref={mapElement} style={{ width:'100%', height:'600px' }} />;
+  return <div ref={mapElement} style={{ width: '100%', height: '600px' }} />;
 }
-
 
 export default MyMap;
