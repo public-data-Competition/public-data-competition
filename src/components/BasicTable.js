@@ -53,7 +53,7 @@ export default function BasicTable() {
   return (
     <center><br/><br/>
       <TableContainer component={Paper} sx={{ backgroundColor: '#F7F9F8',boxShadow: 0 }}>
-        <Table sx={{ maxWidth: 900 }} aria-label="customized table">
+        <Table sx={{ maxWidth: 900,minWidth: 900 }} aria-label="customized table">
           <TableHead >
             <TableRow>
               <StyledTableCell align="center"></StyledTableCell>

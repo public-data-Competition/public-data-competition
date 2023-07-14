@@ -14,6 +14,9 @@ import HealingPage from './pages/HealingPage';
 
 function App() {
   const theme = createTheme({
+    typography: {
+      fontFamily:"'Noto Sans KR', sans-serif"
+    },
     palette: {
       primary: {
         light: '#FFF9E6',
