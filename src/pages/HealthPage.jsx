@@ -2,17 +2,21 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { Box, Checkbox, FormControlLabel, FormGroup, Skeleton } from '@mui/material';
 
-import { PUBLIC_URL } from '../global_variables';
+import { PUBLIC_URL, ADDRESS_URL, SERVICE_KEY, GEO_SERVICE_KEY } from '../global_variables';
 import useHttpRequest from '../hook/use-http';
 import KakaoMap from '../components/KakaoMap';
 import MyNaverMap from "../components/MyMap";
+import { useRecoilState } from "recoil";
+import { addressState } from "../store/store";
 
 const HealthPage = () => {
   const { isLoading, sendGetRequest } = useHttpRequest();
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
-  const [address,setAddress] = useState('');
+  const [addrValues, setAddrValues] = useRecoilState(addressState);
+  const [address, setAddress] = useState('');
   const navigate = useNavigate();
+
 
   console.log(latitude, longitude)
   const getCurrentLocation = () => {
@@ -70,35 +74,8 @@ const HealthPage = () => {
     }
   }
 
-  // async function getReverseGeocoding(latitude, longitude) {
-  //   const clientId = 'uy1qdrrbs3'; // Naver Maps Reverse Geocoding API 클라이언트 아이디
-  //   const clientSecret = '7ESPTMUl2iGbHltoFDIyQkrhBNgfrbdfsC16iAoL'; // Naver Maps Reverse Geocoding API 클라이언트 시크릿
-  //   const url = `/map-reversegeocode/v2/gc?coords=${longitude},${latitude}&sourcecrs=epsg:4326&orders=legalcode,addr,admcode,roadaddr&output=json`;
-
-  //   try {
-  //     const response = await fetch(url, {
-  //       headers: {
-  //         'X-NCP-APIGW-API-KEY-ID': clientId,
-  //         'X-NCP-APIGW-API-KEY': clientSecret
-  //       }
-  //     });
-  //     const data = await response.json();
-
-  //     if (data.status === 'OK' && data.results.length > 0) {
-  //       const address = data.results
-  //       console.log('주소:', address);
-  //     } else {
-  //       console.error('주소를 가져오지 못했습니다.');
-  //     }
-  //   } catch (error) {
-  //     console.error('API 요청 중 오류가 발생했습니다:', error);
-  //   }
-  // }
-
-
-
   async function logJSONData() {
-    const response = await fetch(`${PUBLIC_URL}/B490001/sjHptMcalPstateInfoService/getSjJijeongHptChakgiList?serviceKey=QTM%2Bsk32UMfVLD9pw13UXm%2FIAaDOGy3I0zKkbgdbppFTEg95hFdZpOOkgoesQwT48dig8oY7f3R9PC3%2Fw%2Fm8KQ%3D%3D&addr=${address}`)
+    const response = await fetch(`${PUBLIC_URL}/B490001/sjHptMcalPstateInfoService/getSjJijeongHptChakgiList?serviceKey=${SERVICE_KEY}&addr=${address}`)
       .then(response => response.text())
       .then(xmlData => {
         // 여기서 xmlData는 XML 형식의 문자열 데이터입니다.
@@ -113,11 +90,17 @@ const HealthPage = () => {
         const xmlDoc = parser.parseFromString(xmlData, 'application/xml');
         console.log(xmlDoc)
         // 필요한 정보 추출
+        const extractedAddrValues = [];
         const elements = xmlDoc.getElementsByTagName('item');
         for (let i = 0; i < elements.length; i++) {
-          const value = elements[i].textContent;
-          console.log(value);
+          const addrElement = elements[i].getElementsByTagName('addr')[0];
+          if (addrElement) {
+            const addrValue = addrElement.textContent;
+            extractedAddrValues.push(addrValue);
+            console.log(addrValue);
+          }
         }
+        setAddrValues(extractedAddrValues);
       })
       .catch(error => {
         console.error('Error:', error);
@@ -125,17 +108,22 @@ const HealthPage = () => {
   }
 
   useEffect(() => {
-    logJSONData()
     getCurrentLocation();
-  }, [address]);
+  }, []);
 
   useEffect(() => {
     if (latitude && longitude) {
-      console.log(latitude, longitude)
+      console.log(latitude, longitude);
       getAddressFromCoordinates(latitude, longitude);
       // getReverseGeocoding(latitude, longitude)
     }
   }, [latitude, longitude]);
+
+  useEffect(() => {
+    if (address) {
+      logJSONData();
+    }
+  }, [address]);
 
 
   return (

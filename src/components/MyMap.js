@@ -1,5 +1,8 @@
 import React, { useEffect, useRef } from "react";
-
+import { useRecoilValue } from "recoil";
+import { addressState } from "../store/store";
+import useHttpRequest from '../hook/use-http';
+import { ADDRESS_URL,GEO_SERVICE_KEY } from '../global_variables';
 const markerdata = [
   {
     title: "콜드스퀘어",
@@ -24,7 +27,39 @@ const markerdata = [
 ];
 
 function MyMap() {
+  const { isLoading, sendGetRequest } = useHttpRequest();
   const mapElement = useRef(null);
+  const addressList = useRecoilValue(addressState);
+
+  useEffect(() => {
+    if (addressList && addressList.length > 0) {
+      addressList.forEach((address) => {
+        const url = `address?service=address&request=getcoord&version=2.0&crs=epsg:4326&address=${encodeURIComponent(address)}&refine=false&simple=false&format=json&errorFormat=json&type=road&key=${GEO_SERVICE_KEY}`;
+  
+        fetch(url)
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.response && data.response.status === 'OK') {
+              const result = data.response.result;
+              if (result && result.point) {
+                const latitude = result.point.y;
+                const longitude = result.point.x;
+                console.log(`주소: ${address}`);
+                console.log(`좌표: (${latitude}, ${longitude})`);
+                // 좌표를 활용하여 추가적인 작업 수행 가능
+              } else {
+                console.error('주소를 변환할 수 없습니다.');
+              }
+            } else {
+              console.error('API 응답에서 오류가 발생했습니다.');
+            }
+          })
+          .catch((error) => {
+            console.error('API 요청 중 오류가 발생했습니다:', error);
+          });
+      });
+    }
+  }, [addressList]);
 
   useEffect(() => {
     const { naver } = window;
@@ -55,7 +90,13 @@ function MyMap() {
     });
   }, []);
 
-  return <div ref={mapElement} style={{ width: '100%', height: '600px' }} />;
+  return (
+    <>
+    {!isLoading && (
+      <div ref={mapElement} style={{ width: '100%', height: '600px' }} />
+    )}
+    </>
+  )
 }
 
 export default MyMap;
