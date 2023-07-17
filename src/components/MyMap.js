@@ -31,28 +31,30 @@ function MyMap() {
   const mapElement = useRef(null);
   const addressList = useRecoilValue(addressState);
 
+  // const apiKey = 'AIzaSyABxVUq6e0YgqPRTIycQV48vWqm4ewtVAU'; // Google Maps Geocoding API 키
   useEffect(() => {
     if (addressList && addressList.length > 0) {
       addressList.forEach((address) => {
-        const url = `address?service=address&request=getcoord&version=2.0&crs=epsg:4326&address=${encodeURIComponent(address)}&refine=false&simple=false&format=json&errorFormat=json&type=road&key=${GEO_SERVICE_KEY}`;
+        const url = `/req/address?service=address&request=getcoord&version=2.0&crs=epsg:4326&address=${encodeURIComponent(address)}&refine=false&simple=false&format=json&errorFormat=json&type=road&key=${GEO_SERVICE_KEY}`;
   
         fetch(url)
           .then((response) => response.json())
           .then((data) => {
-            if (data.response && data.response.status === 'OK') {
-              const result = data.response.result;
-              if (result && result.point) {
-                const latitude = result.point.y;
-                const longitude = result.point.x;
-                console.log(`주소: ${address}`);
-                console.log(`좌표: (${latitude}, ${longitude})`);
-                // 좌표를 활용하여 추가적인 작업 수행 가능
-              } else {
-                console.error('주소를 변환할 수 없습니다.');
-              }
-            } else {
-              console.error('API 응답에서 오류가 발생했습니다.');
-            }
+            console.log(data)
+            // if (data.response && data.response.status === 'OK') {
+            //   const result = data.response.result;
+            //   if (result && result.point) {
+            //     const latitude = result.point.y;
+            //     const longitude = result.point.x;
+            //     console.log(`주소: ${address}`);
+            //     console.log(`좌표: (${latitude}, ${longitude})`);
+            //     // 좌표를 활용하여 추가적인 작업 수행 가능
+            //   } else {
+            //     console.error('주소를 변환할 수 없습니다.');
+            //   }
+            // } else {
+            //   console.error('API 응답에서 오류가 발생했습니다.');
+            // }
           })
           .catch((error) => {
             console.error('API 요청 중 오류가 발생했습니다:', error);

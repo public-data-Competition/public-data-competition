@@ -7,12 +7,12 @@ import useHttpRequest from '../hook/use-http';
 import KakaoMap from '../components/KakaoMap';
 import MyNaverMap from "../components/MyMap";
 import { useRecoilState } from "recoil";
-import { addressState } from "../store/store";
+import { addressState, latitudeState, longitudeState } from "../store/store";
 
 const HealthPage = () => {
   const { isLoading, sendGetRequest } = useHttpRequest();
-  const [latitude, setLatitude] = useState(null);
-  const [longitude, setLongitude] = useState(null);
+  const [latitude, setLatitude] = useRecoilState(latitudeState);
+  const [longitude, setLongitude] = useRecoilState(longitudeState);
   const [addrValues, setAddrValues] = useRecoilState(addressState);
   const [address, setAddress] = useState('');
   const navigate = useNavigate();
@@ -135,9 +135,8 @@ const HealthPage = () => {
         <FormControlLabel control={<Checkbox />} label="산재재활기관관리정보" />
       </FormGroup>
       <Box height="900px" >
-        {/* <KakaoMap /> */}
-        <MyNaverMap />
-        {/* <Skeleton width="100vw" height="100vh"></Skeleton> */}
+        <KakaoMap />
+        {/* <MyNaverMap /> */}
       </Box>
     </>
   );

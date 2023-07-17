@@ -1,6 +1,7 @@
-/*global kakao */
-import React, { useEffect } from "react";
-// import "./kakaomap.css";
+import { Skeleton } from "@mui/material";
+import React, { useEffect, useRef } from "react";
+import { useRecoilValue } from "recoil";
+import { addressState, latitudeState, longitudeState } from "../store/store";
 
 const markerdata = [
   {
@@ -26,65 +27,90 @@ const markerdata = [
 ];
 
 function KakaoMap() {
+  const addressList = useRecoilValue(addressState);
+  const latitude = useRecoilValue(latitudeState);
+  const longitude = useRecoilValue(longitudeState);
+  const mapContainerRef = useRef(null);
+
   useEffect(() => {
+    if (latitude && longitude && window.kakao) {
+      loadMapScript();
+    }
+  }, [latitude, longitude, addressList]);
+
+  const loadMapScript = () => {
+    if (!window.kakao) {
+      // Kakao Maps API 스크립트를 동적으로 생성하여 로드합니다.
+      const script = document.createElement("script");
+      script.src = "//dapi.kakao.com/v2/maps/sdk.js?appkey=8e610c53cbec3463a750c7cbf0e5b00c&libraries=services";
+      script.onload = mapScriptLoaded;
+      document.head.appendChild(script);
+    } else {
+      mapScriptLoaded();
+    }
+  };
+
+  const mapScriptLoaded = () => {
+    // Kakao Maps API가 로드된 후에 실행되어야 할 내용을 여기에 작성합니다.
     mapscript();
-  }, []);
+  };
 
   const mapscript = () => {
-    let container = document.getElementById("map");
-    let options = {
-      center: new kakao.maps.LatLng(37.624915253753194, 127.15122688059974),
+    const container = mapContainerRef.current;
+    const options = {
+      center: new window.kakao.maps.LatLng(latitude, longitude),
       level: 5,
     };
-    //map
-    const map = new kakao.maps.Map(container, options);
 
-    markerdata.forEach((el) => {
-      // 마커를 생성합니다
-      const marker = new kakao.maps.Marker({
-        //마커가 표시 될 지도
-        map: map,
-        //마커가 표시 될 위치
-        position: new kakao.maps.LatLng(el.lat, el.lng),
-      });
-      // 마커에 표시할 인포윈도우를 생성합니다
-      var infowindow = new kakao.maps.InfoWindow({
-        content: el.title, // 인포윈도우에 표시할 내용
-      });
-      // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
-      // 이벤트 리스너로는 클로저를 만들어 등록합니다
-      // 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
-      kakao.maps.event.addListener(
-        marker,
-        "mouseover",
-        makeOverListener(map, marker, infowindow)
-      );
-      kakao.maps.event.addListener(
-        marker,
-        "mouseout",
-        makeOutListener(infowindow)
-      );
+    const map = new window.kakao.maps.Map(container, options);
+
+    addressList.forEach((address) => {
+      fetch(`https://dapi.kakao.com/v2/local/search/address.json?query=${encodeURIComponent(address)}`, {
+        headers: {
+          Authorization: "KakaoAK 85657c5ce4798aafc9357c6d2bfaa017", // Replace with your Kakao REST API key
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          
+          const coordinates = data.documents[0].address;
+          const latlng = new window.kakao.maps.LatLng(coordinates.y, coordinates.x);
+
+          // 마커를 생성하여 지도에 표시합니다.
+          const marker = new window.kakao.maps.Marker({
+            position: latlng,
+            map: map,
+          });
+
+          // 인포윈도우를 생성합니다.
+          const infowindow = new window.kakao.maps.InfoWindow({
+            content: address,
+          });
+
+          // 마커에 마우스 이벤트를 등록하여 인포윈도우를 표시하고 숨깁니다.
+          window.kakao.maps.event.addListener(marker, "mouseover", () => {
+            infowindow.open(map, marker);
+          });
+          window.kakao.maps.event.addListener(marker, "mouseout", () => {
+            infowindow.close();
+          });
+        })
+        .catch((error) => {
+          console.error("API 요청 중 오류가 발생했습니다:", error);
+        });
     });
   };
 
-  // 인포윈도우를 표시하는 클로저를 만드는 함수입니다
-  function makeOverListener(map, marker, infowindow) {
-    return function () {
-      infowindow.open(map, marker);
-    };
-  }
-
-  // 인포윈도우를 닫는 클로저를 만드는 함수입니다
-  function makeOutListener(infowindow) {
-    return function () {
-      infowindow.close();
-    };
-  }
-
   return (
-    <div className="kakaomap">
-      <div id="map" style={{ width: "100vw", height: "100vh" }}></div>
-    </div>
+    <>
+      {latitude && longitude ? (
+        <div className="kakaomap">
+          <div ref={mapContainerRef} style={{ width: "100vw", height: "100vh" }}></div>
+        </div>
+      ) : (
+        <Skeleton width="100vw" height="100vh" />
+      )}
+    </>
   );
 }
 
