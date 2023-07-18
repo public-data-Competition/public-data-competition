@@ -5,10 +5,10 @@ import { Box, Checkbox, FormControlLabel, FormGroup, Grid, IconButton, InputAdor
 import { PUBLIC_URL, ADDRESS_URL, SERVICE_KEY, GEO_SERVICE_KEY } from '../global_variables';
 import useHttpRequest from '../hook/use-http';
 import KakaoMap from '../components/KakaoMap';
-import MyNaverMap from "../components/MyMap";
 import { Search as SearchIcon } from '@mui/icons-material';
 import { useRecoilState } from "recoil";
 import { addressState, latitudeState, longitudeState } from "../store/store";
+import List from "../components/List";
 
 const HealthPage = () => {
   const { isLoading, sendGetRequest } = useHttpRequest();
@@ -17,6 +17,8 @@ const HealthPage = () => {
   const [addrValues, setAddrValues] = useRecoilState(addressState);
   const [searchInput, setSearchInput] = useState('');
   const [address, setAddress] = useState('');
+  const [totalCount,setTotalCount] = useState(0);
+  const [pageNo,setPageNo] = useState(1);
   const navigate = useNavigate();
 
   console.log(searchInput)
@@ -77,7 +79,7 @@ const HealthPage = () => {
   }
 
   async function logJSONData() {
-    const response = await fetch(`${PUBLIC_URL}/B490001/sjHptMcalPstateInfoService/getSjJijeongHptChakgiList?serviceKey=${SERVICE_KEY}&addr=${address}`)
+    const response = await fetch(`${PUBLIC_URL}/B490001/sjHptMcalPstateInfoService/getSjJijeongHptChakgiList?serviceKey=${SERVICE_KEY}&pageNo=${pageNo}&addr=${address}`)
       .then(response => response.text())
       .then(xmlData => {
         // 여기서 xmlData는 XML 형식의 문자열 데이터입니다.
@@ -92,17 +94,18 @@ const HealthPage = () => {
         const xmlDoc = parser.parseFromString(xmlData, 'application/xml');
         console.log(xmlDoc)
         // 필요한 정보 추출
-        const extractedAddrValues = [];
+        const extractedData = [];
         const elements = xmlDoc.getElementsByTagName('item');
+        setTotalCount(xmlDoc.getElementsByTagName('totalCount').textContent);
+        setPageNo(xmlDoc.getElementsByTagName('pageNo').textContent);
         for (let i = 0; i < elements.length; i++) {
-          const addrElement = elements[i].getElementsByTagName('addr')[0];
-          if (addrElement) {
-            const addrValue = addrElement.textContent;
-            extractedAddrValues.push(addrValue);
-            console.log(addrValue);
-          }
+          const addr = elements[i].getElementsByTagName('addr')[0].textContent;
+          const hospitalNm = elements[i].getElementsByTagName('hospitalNm')[0].textContent;
+          const tel = elements[i].getElementsByTagName('tel')[0].textContent;
+          extractedData.push({ addr, hospitalNm, tel });
+          console.log(addr)
         }
-        setAddrValues(extractedAddrValues);
+        setAddrValues(extractedData);
       })
       .catch(error => {
         console.error('Error:', error);
@@ -169,9 +172,9 @@ const HealthPage = () => {
         </Grid>
       </Grid>
       <Box height="900px" >
-        <KakaoMap setLongitude={setLongitude} setLatitude={setLatitude}/>
-        {/* <MyNaverMap /> */}
+        <KakaoMap setLongitude={setLongitude} setLatitude={setLatitude} />
       </Box>
+      <List totalCount={totalCount} pageNo={pageNo}/>
     </>
   );
 }
