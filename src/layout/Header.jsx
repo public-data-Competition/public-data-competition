@@ -105,7 +105,7 @@ const Header = () => {
           <Grid item xs={2.2}>
             <Link
               variant="button"
-              href="#"
+              href="/introduce"
               fontWeight="800"
               sx={{ my: 1, mx: 1.5, color: '#2E4230', textDecoration: 'none' }}
             >

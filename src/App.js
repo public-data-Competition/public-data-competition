@@ -11,6 +11,7 @@ import StressPage from './pages/StressPage';
 import PeacePage from './pages/PeacePage';
 import HealthPage from './pages/HealthPage';
 import HealingPage from './pages/HealingPage';
+import IntrodecePage from './pages/IntrodecePage';
 
 function App() {
   const theme = createTheme({
@@ -49,6 +50,7 @@ function App() {
                 <Route index element={<MainPage />} />
                 <Route path="signup" element={<SignUpPage />} />
                 <Route path="signin" element={<SignInPage />} />
+                <Route path="introduce" element={<IntrodecePage />} />
                 <Route path="service" element={<ServicePage />}>
                   <Route path="stress" element={<StressPage />} />
                   <Route path="peace" element={<PeacePage />} />
