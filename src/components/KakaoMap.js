@@ -3,40 +3,45 @@ import React, { useEffect, useRef } from "react";
 import { useRecoilValue } from "recoil";
 import { addressState, latitudeState, longitudeState } from "../store/store";
 
-const markerdata = [
-  {
-    title: "콜드스퀘어",
-    lat: 37.62197524055062,
-    lng: 127.16017523675508,
-  },
-  {
-    title: "하남돼지집",
-    lat: 37.620842424005616,
-    lng: 127.1583774403176,
-  },
-  {
-    title: "수유리우동",
-    lat: 37.624915253753194,
-    lng: 127.15122688059974,
-  },
-  {
-    title: "맛닭꼬",
-    lat: 37.62456273069659,
-    lng: 127.15211256646381,
-  },
-];
-
-function KakaoMap() {
+function KakaoMap({setLatitude,setLongitude}) {
   const addressList = useRecoilValue(addressState);
   const latitude = useRecoilValue(latitudeState);
   const longitude = useRecoilValue(longitudeState);
   const mapContainerRef = useRef(null);
+  const mapRef = useRef(null);
 
   useEffect(() => {
     if (latitude && longitude && window.kakao) {
       loadMapScript();
     }
   }, [latitude, longitude, addressList]);
+
+  useEffect(() => {
+    if (addressList.length > 0) {
+      const firstAddress = addressList[0];
+      fetch(`https://dapi.kakao.com/v2/local/search/address.json?query=${encodeURIComponent(firstAddress)}`, {
+        headers: {
+          Authorization: "KakaoAK 85657c5ce4798aafc9357c6d2bfaa017", // Replace with your Kakao REST API key
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.documents && data.documents.length > 0) {
+            const coordinates = data.documents[0].address;
+            const latlng = new window.kakao.maps.LatLng(coordinates.y, coordinates.x);
+  
+            if (mapRef.current) {
+              mapRef.current.setCenter(latlng);
+            }
+          } else {
+            console.error("API 요청 결과에 주소 정보가 없습니다.");
+          }
+        })
+        .catch((error) => {
+          console.error("API 요청 중 오류가 발생했습니다:", error);
+        });
+    }
+  }, [addressList]);
 
   const loadMapScript = () => {
     if (!window.kakao) {
@@ -63,7 +68,8 @@ function KakaoMap() {
     };
 
     const map = new window.kakao.maps.Map(container, options);
-
+    mapRef.current = map;
+    
     addressList.forEach((address) => {
       fetch(`https://dapi.kakao.com/v2/local/search/address.json?query=${encodeURIComponent(address)}`, {
         headers: {
@@ -76,6 +82,7 @@ function KakaoMap() {
           if (data.documents && data.documents.length > 0) {
             const coordinates = data.documents[0].address;
             const latlng = new window.kakao.maps.LatLng(coordinates.y, coordinates.x);
+
 
             // 마커를 생성하여 지도에 표시합니다.
             const marker = new window.kakao.maps.Marker({
@@ -112,10 +119,10 @@ function KakaoMap() {
     <>
       {latitude && longitude ? (
         <div className="kakaomap">
-          <div ref={mapContainerRef} style={{ width: "100vw", height: "100vh" }}></div>
+          <div ref={mapContainerRef} style={{ width: "100%", height: "100vh" }}></div>
         </div>
       ) : (
-        <Skeleton width="100vw" height="100vh" />
+        <Skeleton width="100%" height="100vh" />
       )}
     </>
   );

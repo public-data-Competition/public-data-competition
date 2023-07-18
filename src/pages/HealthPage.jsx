@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import { Box, Checkbox, FormControlLabel, FormGroup, Skeleton } from '@mui/material';
+import { Box, Checkbox, FormControlLabel, FormGroup, Grid, IconButton, InputAdornment, Skeleton, TextField } from '@mui/material';
 
 import { PUBLIC_URL, ADDRESS_URL, SERVICE_KEY, GEO_SERVICE_KEY } from '../global_variables';
 import useHttpRequest from '../hook/use-http';
 import KakaoMap from '../components/KakaoMap';
 import MyNaverMap from "../components/MyMap";
+import { Search as SearchIcon } from '@mui/icons-material';
 import { useRecoilState } from "recoil";
 import { addressState, latitudeState, longitudeState } from "../store/store";
 
@@ -14,10 +15,11 @@ const HealthPage = () => {
   const [latitude, setLatitude] = useRecoilState(latitudeState);
   const [longitude, setLongitude] = useRecoilState(longitudeState);
   const [addrValues, setAddrValues] = useRecoilState(addressState);
+  const [searchInput, setSearchInput] = useState('');
   const [address, setAddress] = useState('');
   const navigate = useNavigate();
 
-
+  console.log(searchInput)
   console.log(latitude, longitude)
   const getCurrentLocation = () => {
     if (navigator.geolocation) {
@@ -107,6 +109,12 @@ const HealthPage = () => {
       });
   }
 
+  //검색핸들러
+  const handleSearch = () => {
+    console.log('Performing search:', searchInput);
+    setAddress(searchInput);
+  };
+
   useEffect(() => {
     getCurrentLocation();
   }, []);
@@ -128,14 +136,40 @@ const HealthPage = () => {
 
   return (
     <>
-      <FormGroup sx={{ display: 'block' }}>
-        <FormControlLabel control={<Checkbox defaultChecked />} label="산재병원 의료 현황정보" />
-        <FormControlLabel control={<Checkbox />} label="근로자 건강센터 현황" />
-        <FormControlLabel control={<Checkbox />} label="근로자 건강증진활동 관련 민관전문기관" />
-        <FormControlLabel control={<Checkbox />} label="산재재활기관관리정보" />
-      </FormGroup>
+      <Grid container >
+        <Grid item xs={5} ml={12}>
+          <FormControlLabel control={<Checkbox defaultChecked />} label="산재병원 의료 현황정보" />
+        </Grid>
+        <Grid item xs={5} ml={12}>
+          <FormControlLabel control={<Checkbox defaultChecked />} label="근로자 건강센터 현황" />
+        </Grid>
+        <Grid item xs={5} ml={12}>
+          <FormControlLabel control={<Checkbox defaultChecked />} label="근로자 건강증진활동 관련 민관전문기관" />
+        </Grid>
+        <Grid item xs={5} ml={12}>
+          <FormControlLabel control={<Checkbox defaultChecked />} label="산재 재활기관 관리 정보" />
+        </Grid>
+
+        <Grid item xs={10} sx={{ display: 'flex', alignItems: 'center', margin: '15px 0' }}>
+          <TextField
+            label="검색어를 입력해주세요"
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            fullWidth
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={handleSearch}>
+                    <SearchIcon />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+        </Grid>
+      </Grid>
       <Box height="900px" >
-        <KakaoMap />
+        <KakaoMap setLongitude={setLongitude} setLatitude={setLatitude}/>
         {/* <MyNaverMap /> */}
       </Box>
     </>
