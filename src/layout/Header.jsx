@@ -100,7 +100,7 @@ const Header = () => {
       <Toolbar>
         <Grid container sx={{alignItems:'center'}}>
           <Grid item xs={3} >
-            <img onClick={() => { navigate('/') }} alt="logo" src={`./logo.PNG`} style={{ width: '200px' }} />
+            <img onClick={() => { navigate('/') }} alt="logo" src="/logo.png" style={{ width: '200px' }} />
           </Grid>
           <Grid item xs={2.2}>
             <Link
@@ -115,7 +115,7 @@ const Header = () => {
           <Grid item xs={2.2}>
             <Link
               variant="button"
-              href="#"
+              href="/service/healing"
               fontWeight="800"
               sx={{ my: 1, mx: 1.5, color: '#2E4230', textDecoration: 'none' }}
             >
