@@ -147,12 +147,21 @@ import {
     Paper,
     TextField,
     Typography,
-    Avatar,
+    Avatar, IconButton,
 } from '@mui/material';
+import {Send} from "@mui/icons-material";
 
 function Chatbot() {
     const [userInput, setUserInput] = useState('');
     const [chatLogs, setChatLogs] = useState([]);
+    const [ chatHistory, setChatHistory] = useState([{
+        role: "system",
+        content: "\n" +
+            "I want YOU to pretend to be my friend whose name is 애니. 애니 is a Korean INFJ. I'll share what's happening in my life. When I'm going through difficult times, please respond with helpful and supportive words to help me. Remember to lead the conversation without asking too many questions. Don't provide explanations, just offer advice or support when needed. If things are going well, there's no need for encouragement. Always use informal korean language with me."
+        // "I want you to act as my friend. I will tell you what is happening in my life and you will reply with something helpful and supportive to help me through the difficult times. Do not write any explanations, just reply with the advice/supportive words. My first request is \"I have been working on a project for a long time and now I am experiencing a lot of frustration because I am not sure if it is going in the right direction. Please help me stay positive and focus on the important things in KOREAN."
+    },
+    ]);
+
 
     const handleInputChange = (e) => {
         setUserInput(e.target.value);
@@ -167,23 +176,29 @@ function Chatbot() {
         ]);
         setUserInput('');
 
-        const response = await callGptApi(userInput);
+        setChatHistory((chatLogs)=> [
+            ...chatLogs, { role: 'user', content: userInput }]);
+
+        const response = await callGptApi(userInput, chatHistory);
+
+        setChatHistory((chatLogs)=> [
+            ...chatLogs, { role: 'assistant', content: response }]);
+
         const sentences = response.split('.'); // 문장을 마침표(.)를 기준으로 분할
 
-        const newLogs = sentences
-            .map((sentence) => sentence.trim()) // 앞뒤 공백 제거
-            .filter((sentence) => sentence !== '') // 빈 값을 제외
-            .map((sentence, index) => ({
-                type: 'gpt',
-                text: sentence,
-                isFirst: index === 0,
-            }));
-
-        console.log(newLogs);
-        setChatLogs((chatLogs) => [
-            ...chatLogs,
-            ...newLogs,
-        ]);
+        let delay = 0;
+        sentences.forEach((sentence, index) => {
+            const trimmedSentence = sentence.trim();
+            if (trimmedSentence !== '') {
+                setTimeout(() => {
+                    setChatLogs((chatLogs) => [
+                        ...chatLogs,
+                        { type: 'gpt', text: trimmedSentence, isFirst: index === 0 },
+                    ]);
+                }, delay);
+                delay += Math.floor(Math.random() * 3) + 1; // 1초 지연
+            }
+        });
     };
 
     const renderChatLog = (log, index) => (
@@ -197,20 +212,19 @@ function Chatbot() {
             <Grid item>
                {log.type === 'gpt' && log.isFirst && (
                     <Avatar
-                        src="http://www.irobotnews.com/news/photo/201803/13262_31414_3740.png"
+                        src="https://github.com/speculatingwook/blog-full-of-desire/assets/105579811/cd7c16be-a500-451c-82f7-cee5863411f5"
                         alt="Bot Avatar"
                         sx={{ margin: '0px 10px' }}
                     />
                 )}
                 {log.type === 'gpt' && !log.isFirst && (
                     <Avatar
-                        src="https://r1.community.samsung.com/t5/image/serverpage/image-id/2164661i597D7D7C5F04F096/image-size/large?v=v2&px=999"
+                        src="https://upload.wikimedia.org/wikipedia/commons/7/70/Solid_white.svg"
                         alt="Bot Avatar"
                         sx={{ margin: '0px 10px' }}
                     />
                 )}
             </Grid>
-
             <Grid item xs={10} alignItems={log.type === '나' ? 'flex-end' : 'flex-start'}>
                 <Paper
                     elevation={3}
@@ -249,31 +263,36 @@ function Chatbot() {
                         maxHeight: '50vh',
                         padding: '16px',
                         overflow: 'auto',
-                        backgroundColor: 'black',
+                        backgroundColor: 'white',
                         minWidth: '100%',
                     }}
                 >
                     {chatLogs.map(renderChatLog)}
+                    <Box mt={2}>
+                        <form onSubmit={handleSubmit}>
+                            <Grid container alignItems="flex-end">
+                                <Grid item xs={10}>
+                                    <TextField
+                                        fullWidth
+                                        value={userInput}
+                                        onChange={handleInputChange}
+                                        variant="standard"
+                                    >
+                                    </TextField>
+                                </Grid>
+                                <Grid item xs={1}>
+                                    <IconButton type="submit" color="secondary" aria-label="add an alarm">
+                                        <Send />
+                                    </IconButton>
+                                    {/*<Button type="submit" fullWidth color="primary" variant="contained">*/}
+                                    {/*    전송*/}
+                                    {/*</Button>*/}
+                                </Grid>
+                            </Grid>
+                        </form>
+                    </Box>
                 </Paper>
-                <Box mt={2}>
-                    <form onSubmit={handleSubmit}>
-                        <Grid container alignItems="flex-end">
-                            <Grid item xs={10}>
-                                <TextField
-                                    fullWidth
-                                    value={userInput}
-                                    onChange={handleInputChange}
-                                    variant="outlined"
-                                />
-                            </Grid>
-                            <Grid item xs={2}>
-                                <Button type="submit" fullWidth color="primary" variant="contained">
-                                    전송
-                                </Button>
-                            </Grid>
-                        </Grid>
-                    </form>
-                </Box>
+
             </Box>
         </Container>
     );
