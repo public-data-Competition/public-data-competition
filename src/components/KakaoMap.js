@@ -72,28 +72,35 @@ function KakaoMap() {
       })
         .then((response) => response.json())
         .then((data) => {
-          
-          const coordinates = data.documents[0].address;
-          const latlng = new window.kakao.maps.LatLng(coordinates.y, coordinates.x);
+          console.log(data)
+          if (data.documents && data.documents.length > 0) {
+            const coordinates = data.documents[0].address;
+            const latlng = new window.kakao.maps.LatLng(coordinates.y, coordinates.x);
 
-          // 마커를 생성하여 지도에 표시합니다.
-          const marker = new window.kakao.maps.Marker({
-            position: latlng,
-            map: map,
-          });
+            // 마커를 생성하여 지도에 표시합니다.
+            const marker = new window.kakao.maps.Marker({
+              position: latlng,
+              map: map,
+            });
 
-          // 인포윈도우를 생성합니다.
-          const infowindow = new window.kakao.maps.InfoWindow({
-            content: address,
-          });
 
-          // 마커에 마우스 이벤트를 등록하여 인포윈도우를 표시하고 숨깁니다.
-          window.kakao.maps.event.addListener(marker, "mouseover", () => {
-            infowindow.open(map, marker);
-          });
-          window.kakao.maps.event.addListener(marker, "mouseout", () => {
-            infowindow.close();
-          });
+            const content = address ? `<div style="width:150px;text-align:center;padding:6px 0;">${address}</div>` : ''
+            // 인포윈도우를 생성합니다.
+            const infowindow = new window.kakao.maps.InfoWindow({
+              content: content,
+            });
+
+            // 마커에 마우스 이벤트를 등록하여 인포윈도우를 표시하고 숨깁니다.
+            window.kakao.maps.event.addListener(marker, "mouseover", () => {
+              infowindow.open(map, marker);
+            });
+            window.kakao.maps.event.addListener(marker, "mouseout", () => {
+              infowindow.close();
+            });
+          } else {
+            console.error("API 요청 결과에 주소 정보가 없습니다.");
+          }
+
         })
         .catch((error) => {
           console.error("API 요청 중 오류가 발생했습니다:", error);
