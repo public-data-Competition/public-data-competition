@@ -83,7 +83,7 @@ const Header = () => {
       sx={{ my: 1, mx: 1.5, color: 'white', textDecoration: 'none' }}
     >
       <Button sx={{ color: '#2E4230', fontWeight: 'bold', fontSize: '14px' }}>
-        로그인
+      로그인/회원가입
       </Button>
     </Link>
 
@@ -119,7 +119,7 @@ const Header = () => {
               fontWeight="800"
               sx={{ my: 1, mx: 1.5, color: '#2E4230', textDecoration: 'none' }}
             >
-              서비스
+              마음터
             </Link>
           </Grid>
           <Grid item xs={2.2}>
@@ -129,7 +129,7 @@ const Header = () => {
               fontWeight="800"
               sx={{ my: 1, mx: 1.5, color: '#2E4230', textDecoration: 'none' }}
             >
-              회사위치 지정하기
+              성장일기
             </Link>
           </Grid>
           <Grid item xs={2.2}>
