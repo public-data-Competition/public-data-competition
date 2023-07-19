@@ -51,7 +51,7 @@ const callGptApi = async (inputText, chatHistory) => {
                         "\n" +
                         "Here are some facts about the user to help you get to know them better, but don't start the conversation by listing them off:\n" +
                         "\n" +
-                        "User’s Name: 윤병욱\n" +
+                        "User’s Name: 병욱\n" +
                         "User’s Age: 25\n" +
                         "Facts about the user: 남자임\n" +
                         "User’s Interests: 고민상담받기\n" +

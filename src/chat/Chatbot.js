@@ -113,7 +113,7 @@ function Chatbot() {
                 <Paper
                     ref={chatLogsRef}
                     sx={{
-                        height: '800px',
+                        height: '700px',
                         padding: '16px',
                         overflowY: 'auto', // Make the chatbox scrollable if content overflows
                         backgroundColor: 'white',
