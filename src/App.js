@@ -51,11 +51,11 @@ function App() {
                 <Route path="signup" element={<SignUpPage />} />
                 <Route path="signin" element={<SignInPage />} />
                 <Route path="introduce" element={<IntrodecePage />} />
+                <Route path="healing" element={<HealingPage />} />
                 <Route path="service" element={<ServicePage />}>
                   <Route path="stress" element={<StressPage />} />
                   <Route path="peace" element={<PeacePage />} />
                   <Route path="health" element={<HealthPage />} />
-                  <Route path="healing" element={<HealingPage />} />
                 </Route>
               </Route>
             </Routes>

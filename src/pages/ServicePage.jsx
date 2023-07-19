@@ -12,7 +12,6 @@ const ServicePage = () => {
     { label: '스트레스 지수', path: '/service/stress', index: 0, panelContent: (<StressPage/>) },
     { label: '소리산책', path: '/service/peace', index: 1, panelContent: (<PeacePage/>) },
     { label: '건강지도', path: '/service/health', index: 2, panelContent: (<HealthPage/>) },
-    { label: '마음터', path: '/service/healing', index: 3, panelContent: (<HealingPage/>) },
   ];
 
   return (
