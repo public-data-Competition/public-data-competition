@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useEffect, useRef } from "react";
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -32,8 +32,11 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function createData(name, Not, Rarely, Occasionally, Frequently, frequently) {
-  return { name, Not, Rarely, Occasionally, Frequently, frequently };
+// function createData(name, Not, Rarely, Occasionally, Frequently, frequently) {
+//   return { name, Not, Rarely, Occasionally, Frequently, frequently };
+// }
+function createData(name) {
+  return { name, checkedValue: null };
 }
 
 const rows = [
@@ -50,6 +53,16 @@ const rows = [
 ];
 
 export default function BasicTable() {
+  const [tableRows, setTableRows] = useState(rows);
+
+  const handleChange = (index, field) => (event) => {
+    const value = event.target.checked ? field : null;
+    console.log(index,value)
+    const newRows = [...tableRows];
+    newRows[index].checkedValue = value;
+    setTableRows(newRows);
+  };
+
   return (
     <center><br/><br/>
       <TableContainer component={Paper} sx={{ backgroundColor: '#F7F9F8',boxShadow: 0 }}>
@@ -73,19 +86,24 @@ export default function BasicTable() {
                 </StyledTableCell>
                 <StyledTableCell align="center">{row.name}</StyledTableCell>
                 <StyledTableCell align="center">
-                  <Checkbox checked={row.Not} />
+                  {/* <Checkbox checked={row.Not} /> */}
+                  <Checkbox checked={row.checkedValue === 'Not'} onChange={handleChange(index, 'Not')} />
                 </StyledTableCell>
                 <StyledTableCell align="center">
-                  <Checkbox checked={row.Rarely} />
+                  {/* <Checkbox checked={row.Rarely} /> */}
+                  <Checkbox checked={row.checkedValue === 'Rarely'} onChange={handleChange(index, 'Rarely')} />
                 </StyledTableCell>
                 <StyledTableCell align="center">
-                  <Checkbox checked={row.Occasionally} />
+                  {/* <Checkbox checked={row.Occasionally} /> */}
+                  <Checkbox checked={row.checkedValue === 'Occasionally'} onChange={handleChange(index, 'Occasionally')} />
                 </StyledTableCell>
                 <StyledTableCell align="center">
-                  <Checkbox checked={row.Frequently} />
+                  {/* <Checkbox checked={row.Frequently} /> */}
+                  <Checkbox checked={row.checkedValue === 'Frequently'} onChange={handleChange(index, 'Frequently')} />
                 </StyledTableCell>
                 <StyledTableCell align="center" sx={{borderRight: `1px solid #c5dad3`,}}>
-                  <Checkbox checked={row.frequently} />
+                  {/* <Checkbox checked={row.frequently} /> */}
+                  <Checkbox checked={row.checkedValue === 'frequently'} onChange={handleChange(index, 'frequently')} />
                 </StyledTableCell>
               </StyledTableRow>
             ))}

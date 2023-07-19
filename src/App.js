@@ -12,11 +12,12 @@ import PeacePage from './pages/PeacePage';
 import HealthPage from './pages/HealthPage';
 import HealingPage from './pages/HealingPage';
 import IntrodecePage from './pages/IntrodecePage';
+import StressTestPage from './pages/StressTestPage';
 
 function App() {
   const theme = createTheme({
     typography: {
-      fontFamily:"'Noto Sans KR', sans-serif"
+      fontFamily: "'Noto Sans KR', sans-serif"
     },
     palette: {
       primary: {
@@ -52,6 +53,7 @@ function App() {
                 <Route path="signin" element={<SignInPage />} />
                 <Route path="introduce" element={<IntrodecePage />} />
                 <Route path="healing" element={<HealingPage />} />
+                <Route path="test" element={<StressTestPage />} />
                 <Route path="service" element={<ServicePage />}>
                   <Route path="stress" element={<StressPage />} />
                   <Route path="peace" element={<PeacePage />} />
