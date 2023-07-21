@@ -6,15 +6,18 @@ import good from "../data/good.json";
 import happy from "../data/happy.json";
 import { Box } from '@mui/system';
 import { Grid, Typography } from "@mui/material";
+import { useRecoilValue } from "recoil";
+import { totalScoreState } from "../store/store";
 
 const StressResultPage = () => {
+  const totalScore = useRecoilValue(totalScoreState)
   const navigate = useNavigate();
 
   return (
     <Box>
       <center style={{ marginTop: '100px' }}>
         <Lottie className="result-icon" animationData={good} />
-        <Typography>00님의 스트레스 지수는 '정상' 수준입니다.</Typography><br /><br />
+        <Typography>00님의 스트레스 지수는 {totalScore}점, '정상' 수준입니다.</Typography><br /><br />
         <div className='basic basic-wrap'>
           <img alt="happy" src="/any-good.png" className="happy" />
           <img alt="talk" src="/talk.png" style={{ width: '70%' }} />
