@@ -19,3 +19,8 @@ export const coordinatesState = atom({
   key: 'coordinatesState',
   default: []
 });
+
+export const totalScoreState = atom({
+  key: 'totalScoreState',
+  default: 0
+});

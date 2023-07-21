@@ -13,6 +13,7 @@ import HealthPage from './pages/HealthPage';
 import HealingPage from './pages/HealingPage';
 import IntrodecePage from './pages/IntrodecePage';
 import StressTestPage from './pages/StressTestPage';
+import StressResultPage from './pages/StressResultPage';
 
 function App() {
   const theme = createTheme({
@@ -54,6 +55,7 @@ function App() {
                 <Route path="introduce" element={<IntrodecePage />} />
                 <Route path="healing" element={<HealingPage />} />
                 <Route path="test" element={<StressTestPage />} />
+                <Route path="result" element={<StressResultPage />} />
                 <Route path="service" element={<ServicePage />}>
                   <Route path="stress" element={<StressPage />} />
                   <Route path="peace" element={<PeacePage />} />

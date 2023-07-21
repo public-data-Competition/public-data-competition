@@ -1,13 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import { styled } from '@mui/material/styles';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
+import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from "recoil";
+
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import { Button, Checkbox } from '@mui/material';
+import { Button, Checkbox,Table,TableBody,TableContainer,TableHead,TableRow,Paper,styled } from '@mui/material';
+import { totalScoreState } from "../store/store";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -54,19 +51,60 @@ const rows = [
 
 export default function BasicTable() {
   const [tableRows, setTableRows] = useState(rows);
+  const [totalScore, setTotalScore] = useRecoilState(totalScoreState);
+  const navigate = useNavigate();
+
+  console.log(tableRows)
+  const scoreMap = {
+    1: { 'Not': 0, 'Rarely': 1, 'Occasionally': 2, 'Frequently': 3, 'frequently': 4 },
+    2: { 'Not': 0, 'Rarely': 1, 'Occasionally': 2, 'Frequently': 3, 'frequently': 4 },
+    3: { 'Not': 0, 'Rarely': 1, 'Occasionally': 2, 'Frequently': 3, 'frequently': 4 },
+    4: { 'Not': 4, 'Rarely': 3, 'Occasionally': 2, 'Frequently': 1, 'frequently': 0 },
+    5: { 'Not': 4, 'Rarely': 3, 'Occasionally': 2, 'Frequently': 1, 'frequently': 0 },
+    6: { 'Not': 0, 'Rarely': 1, 'Occasionally': 2, 'Frequently': 3, 'frequently': 4 },
+    7: { 'Not': 4, 'Rarely': 3, 'Occasionally': 2, 'Frequently': 1, 'frequently': 0 },
+    8: { 'Not': 4, 'Rarely': 3, 'Occasionally': 2, 'Frequently': 1, 'frequently': 0 },
+    9: { 'Not': 0, 'Rarely': 1, 'Occasionally': 2, 'Frequently': 3, 'frequently': 4 },
+    10: { 'Not': 0, 'Rarely': 1, 'Occasionally': 2, 'Frequently': 3, 'frequently': 4 },
+  };
+
+  // 각 체크박스에 해당하는 점수를 계산하는 함수
+  const calculateScore = (index, value) => {
+    const field = value || null;
+    const score = scoreMap[index][field] || 0;
+    return score;
+  };
 
   const handleChange = (index, field) => (event) => {
     const value = event.target.checked ? field : null;
-    console.log(index,value)
+    console.log(index, value)
     const newRows = [...tableRows];
     newRows[index].checkedValue = value;
+
+    // 각 체크박스에 해당하는 값을 기반으로 점수를 계산하여 저장
+    const score = calculateScore(index + 1, value); // 체크박스의 index는 0부터 시작하므로 +1을 해줍니다.
+    newRows[index].score = score;
+
     setTableRows(newRows);
   };
 
+  const totalScoreHandler = () => {
+    // 총 점수 계산
+    let totalScore = 0;
+    for (const row of tableRows) {
+      totalScore += row.score || 0;
+    }
+
+    setTotalScore(totalScore);
+    // 총 점수를 alert로 표시
+    alert(`총 점수는 ${totalScore}점 입니다.`);
+    navigate('/result');
+  }
+
   return (
-    <center><br/><br/>
-      <TableContainer component={Paper} sx={{ backgroundColor: '#F7F9F8',boxShadow: 0 }}>
-        <Table sx={{ maxWidth: 900,minWidth: 900 }} aria-label="customized table">
+    <center><br /><br />
+      <TableContainer component={Paper} sx={{ backgroundColor: '#F7F9F8', boxShadow: 0 }}>
+        <Table sx={{ maxWidth: 900, minWidth: 900 }} aria-label="customized table">
           <TableHead >
             <TableRow>
               <StyledTableCell align="center"></StyledTableCell>
@@ -81,28 +119,23 @@ export default function BasicTable() {
           <TableBody>
             {rows.map((row, index) => (
               <StyledTableRow key={row.name}>
-                <StyledTableCell component="th" scope="row" align="center" sx={{ backgroundColor: '#f5faf8', fontWeight: 'bold'}} >
+                <StyledTableCell component="th" scope="row" align="center" sx={{ backgroundColor: '#f5faf8', fontWeight: 'bold' }} >
                   {index + 1}
                 </StyledTableCell>
                 <StyledTableCell align="center">{row.name}</StyledTableCell>
                 <StyledTableCell align="center">
-                  {/* <Checkbox checked={row.Not} /> */}
                   <Checkbox checked={row.checkedValue === 'Not'} onChange={handleChange(index, 'Not')} />
                 </StyledTableCell>
                 <StyledTableCell align="center">
-                  {/* <Checkbox checked={row.Rarely} /> */}
                   <Checkbox checked={row.checkedValue === 'Rarely'} onChange={handleChange(index, 'Rarely')} />
                 </StyledTableCell>
                 <StyledTableCell align="center">
-                  {/* <Checkbox checked={row.Occasionally} /> */}
                   <Checkbox checked={row.checkedValue === 'Occasionally'} onChange={handleChange(index, 'Occasionally')} />
                 </StyledTableCell>
                 <StyledTableCell align="center">
-                  {/* <Checkbox checked={row.Frequently} /> */}
                   <Checkbox checked={row.checkedValue === 'Frequently'} onChange={handleChange(index, 'Frequently')} />
                 </StyledTableCell>
-                <StyledTableCell align="center" sx={{borderRight: `1px solid #c5dad3`,}}>
-                  {/* <Checkbox checked={row.frequently} /> */}
+                <StyledTableCell align="center" sx={{ borderRight: `1px solid #c5dad3`, }}>
                   <Checkbox checked={row.checkedValue === 'frequently'} onChange={handleChange(index, 'frequently')} />
                 </StyledTableCell>
               </StyledTableRow>
@@ -110,8 +143,9 @@ export default function BasicTable() {
           </TableBody>
         </Table>
       </TableContainer>
-      <br/><br/>
-      <Button variant='outlined' onClick={() => {alert('진단결과 버튼')}}>진단결과 보기</Button>
+      <br /><br />
+
+      <Button variant='outlined' onClick={() => { totalScoreHandler() }}>진단결과 보기</Button>
     </center>
   );
 }
