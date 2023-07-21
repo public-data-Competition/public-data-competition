@@ -1,13 +1,22 @@
 import { useNavigate } from 'react-router-dom';
+import Lottie from "lottie-react";
+import { Box } from '@mui/system';
 import SignIn from '../components/SignIn';
 import BasicTable from '../components/BasicTable';
-import { Box } from '@mui/system';
-
+import happy from "../data/happy.json";
 const StressTestPage = () => {
   const navigate = useNavigate();
 
   return (
-    <BasicTable/>
+    <>
+    
+      <div className='basic basic-wrap'>
+      <Lottie className="happy" animationData={happy}/>
+        {/* <img alt="smile" src="/smile.png" style={{ width: '10%', marginRight: '20px' }} /> */}
+        <img alt="talk" src="/talk.png" style={{ width: '70%' }} />
+      </div>
+      <BasicTable />
+    </>
   );
 }
 

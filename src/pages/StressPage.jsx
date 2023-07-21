@@ -8,18 +8,14 @@ const StressPage = () => {
 
   return (
     <Box>
-      <center>
-        <div className='basic basic-wrap'>
-          <img alt="smile" src="/smile.png" style={{ width: '10%', marginRight: '20px' }} />
-          <img alt="talk" src="/talk.png" style={{ width: '70%' }} />
-        </div>
+      <center style={{marginTop:'100px'}}>
         <img alt="stress1" src="/stress1.png" style={{ width: '80%' }} />
         <div 
         className='basic basic-wrap'
         onClick={()=>{navigate('/test')}} 
         style={{ width: '220px' }}
         >
-          <img alt="stressButton" src="/stressButton.png" style={{ width: '80%' }} />
+          <img alt="stressButton" src="/stressButton.png" style={{ width: '220px' }} />
         </div>
       </center>
     </Box>
