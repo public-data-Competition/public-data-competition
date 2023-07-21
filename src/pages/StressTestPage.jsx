@@ -6,7 +6,7 @@ const StressTestPage = () => {
   return (
     <>
       <div className='basic basic-wrap'>
-        <Lottie className="happy" animationData={happy} />
+        <Lottie c animationData={happy} />
         <img alt="talk" src="/talk.png" style={{ width: '70%' }} />
       </div>
       <BasicTable />

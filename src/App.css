@@ -43,6 +43,13 @@
   align-items: center;
   justify-content: center;
 }
+
+.basic-row {
+  display:grid;
+  align-items: center;
+  justify-content: center;
+}
+
 .basic-wrap {
   margin:50px 0;
 }
@@ -93,4 +100,18 @@
 .happy {
   width:100px;
   margin-right:10px;
+}
+
+.result-icon {
+  width:200px;
+}
+
+.result-path {
+  background-color: white;
+  border-radius: 8px;
+  height:200px;
+}
+
+.result-path img {
+  width:70px;
 }
